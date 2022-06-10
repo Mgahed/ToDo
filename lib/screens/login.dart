@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/auth.dart';
 import '../googleSignIn.dart';
+import '../widgets/snackBar.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key, required this.title}) : super(key: key);
@@ -11,6 +15,39 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String _name = '';
+  String _email = '';
+  String _token = '';
+  String _exp = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+    setData();
+  }
+
+  setData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('_name', _name);
+    prefs.setString('_email', _email);
+    prefs.setString('_token', _token);
+    prefs.setString('_exp', _exp);
+  }
+
+  getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = prefs.getString('_name') ?? '';
+      _email = prefs.getString('_email') ?? '';
+      _token = prefs.getString('_token') ?? '';
+      _exp = prefs.getString('_exp') ?? '';
+    });
+    if (_token != '') {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
   double getSmallDiameter(BuildContext context) =>
       MediaQuery.of(context).size.width * 2 / 3;
 
@@ -236,6 +273,21 @@ class _LoginState extends State<Login> {
       return;
     }
     _formKey.currentState?.save();
-    print(_formData);
+    login(_formData).then((response) {
+      final snackBar = customSnackBar(response["message"], "ok");
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      if (response["token"] != null) {
+        // Future.delayed(Duration.zero, () async {
+        setState(() {
+          _token = response["token"];
+          _name = response["name"];
+          _email = response["email"];
+          _exp = response["expireToken"];
+        });
+        setData();
+        // });
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
   }
 }

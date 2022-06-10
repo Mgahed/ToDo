@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mrttodo/widgets/snackBar.dart';
+
+import '../api/auth.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key, required this.title}) : super(key: key);
@@ -20,7 +23,7 @@ class _SignupState extends State<Signup> {
   final _passwordController = TextEditingController();
 
   final Map<String, String> _formData = {
-    'name': '',
+    'username': '',
     'email': '',
     'password': '',
     'passwordConfirm': '',
@@ -91,7 +94,7 @@ class _SignupState extends State<Signup> {
                             return null;
                           },
                           onSaved: (value) {
-                            _formData['name'] = value!;
+                            _formData['username'] = value!;
                           },
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
@@ -244,6 +247,10 @@ class _SignupState extends State<Signup> {
       return;
     }
     _formKey.currentState?.save();
-    print(_formData);
+    signUp(_formData).then((String value) {
+      final snackBar = customSnackBar(value, "ok");
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+    // print(_formData);
   }
 }

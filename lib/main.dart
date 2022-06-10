@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mrttodo/screens/home.dart';
 import 'package:mrttodo/screens/login.dart';
 import 'package:mrttodo/screens/signup.dart';
+import 'package:mrttodo/screens/splashScreen.dart';
 import 'package:mrttodo/theme/my_theme.dart';
 
 void main() async {
@@ -22,11 +24,13 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         colorScheme: darkTheme,
       ),
-      initialRoute: '/login',
+      initialRoute: '/splash',
       // home: MyHomePage(),
       routes: {
+        '/splash': (context) => const MySplashScreen(title: 'Todo App'),
         '/login': (context) => const Login(title: 'Login'),
         '/signup': (context) => const Signup(title: 'Login'),
+        '/home': (context) => const Home(title: 'Todo App'),
       },
     );
   }
