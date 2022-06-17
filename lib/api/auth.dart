@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:mrttodo/api/base.dart';
+import 'package:mrttodo/functions/prefs.dart';
 
+// signUp api call
 Future<String> signUp(data) async {
   try {
     var response = await Dio().post(
       '$baseUrl/users',
-      data: data,
+      data: {"user": data},
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -35,6 +37,7 @@ Future<String> signUp(data) async {
   }
 }
 
+// login api call
 Future<dynamic> login(data) async {
   try {
     var response = await Dio().post(
@@ -68,13 +71,45 @@ Future<dynamic> login(data) async {
     }
   } on DioError catch (e) {
     if (e.response?.statusCode == 422) {
-      String error = '';
+      /*String error = '';
       for (var currError in e.response?.data['errors']) {
         error += '\n$currError';
-      }
-      return {"message": error};
+      }*/
+      return {"message": e.response?.data['errors']};
     } else {
       return {"message": 'Something went wrong check your credentials'};
+    }
+  }
+}
+
+// logout api call
+Future<dynamic> logout(token) async {
+  try {
+    var response = await Dio().post(
+      '$baseUrl/auth/logout',
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer $token",
+      }),
+    );
+    print("ress =>>> $response");
+    if (response.statusCode == 200) {
+      setDataPrefs('', '', '', '');
+      return {"message": "logout successfully", "status": true};
+    } else {
+      String error = '';
+      for (var currError in response.data.errors) {
+        error += '$currError\n';
+      }
+      return {"message": error};
+    }
+  } on DioError catch (e) {
+    if (e.response?.statusCode == 401) {
+      return {"message": e.response?.data['errors'], "status": false};
+    } else {
+      return {"message": 'Something went wrong', "status": false};
     }
   }
 }

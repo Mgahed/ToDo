@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/auth.dart';
+import '../functions/prefs.dart';
 import '../googleSignIn.dart';
 import '../widgets/snackBar.dart';
 import 'home.dart';
@@ -24,16 +25,16 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     getData();
-    setData();
+    setDataPrefs(_name, _email, _token, _exp);
   }
 
-  setData() async {
+  /*setData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('_name', _name);
     prefs.setString('_email', _email);
     prefs.setString('_token', _token);
     prefs.setString('_exp', _exp);
-  }
+  }*/
 
   getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -284,7 +285,7 @@ class _LoginState extends State<Login> {
           _email = response["email"];
           _exp = response["expireToken"];
         });
-        setData();
+        setDataPrefs(_name, _email, _token, _exp);
         // });
         Navigator.pushReplacementNamed(context, '/home');
       }

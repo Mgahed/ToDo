@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mrttodo/widgets/snackBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/auth.dart';
 import '../functions/capitalize.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -63,6 +65,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           buildListTile(context, 'home'),
+          buildListTile(context, 'profile'),
+          ListTile(
+            title: const Text('Logout'),
+            leading: const Icon(Icons.logout),
+            onTap: () {
+              logout(_token).then((response) {
+                if (response["status"]) {
+                  Navigator.pushReplacementNamed(context, '/login');
+                }
+                final snackBar = customSnackBar(response["message"], "ok");
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              });
+            },
+          ),
         ],
       ),
     );
@@ -71,7 +87,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ListTile buildListTile(BuildContext context, route) {
     return ListTile(
       title: Text(capitalize(route)),
-      leading: const Icon(Icons.home),
+      leading:
+          route == 'home' ? const Icon(Icons.home) : const Icon(Icons.person),
       onTap: () {
         Navigator.of(context).pushReplacementNamed('/$route');
       },
