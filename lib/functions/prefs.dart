@@ -5,5 +5,7 @@ setDataPrefs(name, email, token, exp) async {
   prefs.setString('_name', name);
   prefs.setString('_email', email);
   prefs.setString('_token', token);
-  prefs.setString('_exp', exp);
+  if (exp != null) {
+    prefs.setString('_exp', exp);
+  }
 }

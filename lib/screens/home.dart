@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mrttodo/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../functions/checkAuth.dart';
 import '../widgets/drawerWidget.dart';
 
 class Home extends StatefulWidget {
@@ -35,6 +35,7 @@ class _HomeState extends State<Home> {
     if (_token == '') {
       Navigator.pushReplacementNamed(context, '/login');
     }
+    checkUser(context, _token);
   }
 
   @override

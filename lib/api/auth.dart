@@ -82,6 +82,44 @@ Future<dynamic> login(data) async {
   }
 }
 
+// get user data api call
+Future<dynamic> getUserData(token) async {
+  try {
+    var response = await Dio().get(
+      '$baseUrl/user/profile',
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer $token",
+      }),
+    );
+    print("ress =>>> $response");
+    if (response.statusCode == 200) {
+      var name = response.data['user']['username'];
+      var email = response.data['user']['email'];
+      setDataPrefs(name, email, token, null);
+      return {"message": "User data retrieved successfully", "status": true};
+    } else {
+      String error = '';
+      for (var currError in response.data.errors) {
+        error += '$currError\n';
+      }
+      return {"message": error, "status": false};
+    }
+  } on DioError catch (e) {
+    if (e.response?.statusCode == 401) {
+      String error = '';
+      for (var currError in e.response?.data['errors']) {
+        error += '\n$currError';
+      }
+      return {"message": error, "status": false};
+    } else {
+      return {"message": 'Something went wrong', "status": false};
+    }
+  }
+}
+
 // logout api call
 Future<dynamic> logout(token) async {
   try {
