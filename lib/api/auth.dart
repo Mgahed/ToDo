@@ -83,7 +83,7 @@ Future<dynamic> login(data) async {
 }
 
 // get user data api call
-Future<dynamic> getUserData(token) async {
+Future<dynamic> getUserData(String token) async {
   try {
     var response = await Dio().get(
       '$baseUrl/user/profile',
@@ -94,7 +94,6 @@ Future<dynamic> getUserData(token) async {
         "Authorization": "Bearer $token",
       }),
     );
-    print("ress =>>> $response");
     if (response.statusCode == 200) {
       var name = response.data['user']['username'];
       var email = response.data['user']['email'];
@@ -110,10 +109,10 @@ Future<dynamic> getUserData(token) async {
   } on DioError catch (e) {
     if (e.response?.statusCode == 401) {
       String error = '';
-      for (var currError in e.response?.data['errors']) {
+      /*for (var currError in e.response?.data['errors']) {
         error += '\n$currError';
-      }
-      return {"message": error, "status": false};
+      }*/
+      return {"message": e.response?.data['errors'], "status": false};
     } else {
       return {"message": 'Something went wrong', "status": false};
     }
@@ -186,7 +185,7 @@ Future<dynamic> logout(token) async {
       for (var currError in response.data.errors) {
         error += '$currError\n';
       }
-      return {"message": error};
+      return {"message": error, "status": false};
     }
   } on DioError catch (e) {
     if (e.response?.statusCode == 401) {

@@ -7,7 +7,7 @@ checkUser(context, token) {
   getUserData(token).then((value) {
     if (!value['status']) {
       logout(token).then((response) {
-        if (response["status"]) {
+        if (response["status"] || !value['status']) {
           Navigator.pushReplacementNamed(context, '/login');
         }
         final snackBar = customSnackBar(response["message"], "ok");
