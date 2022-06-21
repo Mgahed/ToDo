@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mrttodo/screens/editUserData.dart';
 import 'package:mrttodo/screens/home.dart';
 import 'package:mrttodo/screens/login.dart';
 import 'package:mrttodo/screens/signup.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(title: 'Login'),
         '/signup': (context) => const Signup(title: 'Login'),
         '/home': (context) => const Home(title: 'Todo App'),
+        '/profile': (context) => const EditUserData(title: 'Edit Profile'),
       },
     );
   }

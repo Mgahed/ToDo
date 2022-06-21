@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/auth.dart';
 import '../functions/capitalize.dart';
+import '../functions/checkAuth.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -37,6 +38,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     if (_token == '') {
       Navigator.pushReplacementNamed(context, '/login');
     }
+    checkUser(context, _token);
   }
 
   @override

@@ -4,7 +4,9 @@ setDataPrefs(name, email, token, exp) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('_name', name);
   prefs.setString('_email', email);
-  prefs.setString('_token', token);
+  if (token != null) {
+    prefs.setString('_token', token);
+  }
   if (exp != null) {
     prefs.setString('_exp', exp);
   }

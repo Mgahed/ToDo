@@ -98,8 +98,53 @@ Future<dynamic> getUserData(token) async {
     if (response.statusCode == 200) {
       var name = response.data['user']['username'];
       var email = response.data['user']['email'];
-      setDataPrefs(name, email, token, null);
+      setDataPrefs(name, email, null, null);
       return {"message": "User data retrieved successfully", "status": true};
+    } else {
+      String error = '';
+      for (var currError in response.data.errors) {
+        error += '$currError\n';
+      }
+      return {"message": error, "status": false};
+    }
+  } on DioError catch (e) {
+    if (e.response?.statusCode == 401) {
+      String error = '';
+      for (var currError in e.response?.data['errors']) {
+        error += '\n$currError';
+      }
+      return {"message": error, "status": false};
+    } else {
+      return {"message": 'Something went wrong', "status": false};
+    }
+  }
+}
+
+// update user data api call
+Future<dynamic> updateUserData(token, data) async {
+  try {
+    if (data['password'] == '') {
+      data.remove('password');
+    }
+    if (data['username'] == '') {
+      data.remove('username');
+    }
+    var response = await Dio().post(
+      '$baseUrl/user/update',
+      data: {"user": data},
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer $token",
+      }),
+    );
+    print("ress =>>> $response");
+    if (response.statusCode == 200) {
+      var name = response.data['username'];
+      var email = response.data['email'];
+      setDataPrefs(name, email, null, null);
+      return {"message": "User data updated successfully", "status": true};
     } else {
       String error = '';
       for (var currError in response.data.errors) {
