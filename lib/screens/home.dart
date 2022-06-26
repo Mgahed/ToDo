@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mrttodo/controller/todoController.dart';
 
 import '../functions/checkAuth.dart';
 import '../functions/prefs.dart';
@@ -14,6 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final TodoController _todoController = Get.find();
+
   String _name = '';
   String _email = '';
   String _token = '';
@@ -47,18 +50,45 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text('Name: $_name'),
-          Text('Email: $_email'),
-          Text('Exp: $_exp'),
-        ]),
+      body: SafeArea(
+        child: Obx(() {
+          var todos = _todoController.todos.value;
+          return RefreshIndicator(
+            onRefresh: () async {
+              // _todoController.getTodos();
+            },
+            child: ListView.builder(
+              itemCount: todos.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(todos[index]["todo"],
+                      style: const TextStyle(
+                          decoration: TextDecoration.lineThrough)),
+                  subtitle: Text(todos[index]["category_id"].toString()),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      // _todoController.deleteTodo(todos[index]["id"]);
+                    },
+                  ),
+                  leading: Checkbox(
+                    value: todos[index]["status"],
+                    onChanged: (value) {
+                      // _todoController.updateTodo(todos[index]["id"], value);
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        }),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Get.toNamed('/add-todo');
         },
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text('Add Todo'),
       ),
     );
   }

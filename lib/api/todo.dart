@@ -7,16 +7,17 @@ import 'base.dart';
 Future<dynamic> createTodo(data) async {
   try {
     var response = await Dio().post(
-      '$baseUrl/todos',
+      '$baseUrl/todo/create',
       data: data,
       options: Options(headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer ${data['token']}",
       }),
     );
-    print("ress =>>> $response");
-    if (response.statusCode == 200) {
+    print("create todo ress =>>> $response");
+    if (response.statusCode == 201) {
       return {"message": "todo created successfully"};
     } else {
       String error = '';

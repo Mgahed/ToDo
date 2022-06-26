@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mrttodo/screens/addTodo.dart';
 import 'package:mrttodo/screens/editUserData.dart';
 import 'package:mrttodo/screens/home.dart';
 import 'package:mrttodo/screens/login.dart';
 import 'package:mrttodo/screens/signup.dart';
 import 'package:mrttodo/screens/splashScreen.dart';
 import 'package:mrttodo/theme/my_theme.dart';
+
+import 'controller/todoController.dart';
 
 void main() async {
   await GetStorage.init();
@@ -18,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(TodoController());
     return GetMaterialApp(
       title: 'Todo List',
       debugShowCheckedModeBanner: false,
@@ -46,7 +50,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/home', page: () => const Home(title: 'Todo App')),
         GetPage(
             name: '/profile',
-            page: () => const EditUserData(title: 'Edit Profile'))
+            page: () => const EditUserData(title: 'Edit Profile')),
+        GetPage(
+            name: '/add-todo', page: () => const AddTodo(title: 'Add a Todo')),
       ],
     );
   }

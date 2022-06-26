@@ -3,7 +3,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../api/auth.dart';
+import '../controller/todoController.dart';
 import '../widgets/snackBar.dart';
+
+final TodoController _todoController = Get.find();
 
 checkUser(context, token) {
   getUserData(token).then((value) {
@@ -15,6 +18,9 @@ checkUser(context, token) {
         final snackBar = customSnackBar(response["message"], "ok");
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });
+    } else {
+      var todos = value['todos'];
+      _todoController.setTodo(todos);
     }
   });
 }

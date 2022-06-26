@@ -95,10 +95,14 @@ Future<dynamic> getUserData(String token) async {
       }),
     );
     if (response.statusCode == 200) {
-      var name = response.data['user']['username'];
-      var email = response.data['user']['email'];
+      var name = response.data['username'];
+      var email = response.data['email'];
       setDataPrefs(name, email, null, null);
-      return {"message": "User data retrieved successfully", "status": true};
+      return {
+        "message": "User data retrieved successfully",
+        "status": true,
+        "todos": response.data['todos']
+      };
     } else {
       String error = '';
       for (var currError in response.data.errors) {
