@@ -1,7 +1,10 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../functions/checkAuth.dart';
+import '../functions/prefs.dart';
 import 'home.dart';
 import 'login.dart';
 
@@ -25,11 +28,16 @@ class _MySplashScreenState extends State<MySplashScreen> {
   }
 
   getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _name = prefs.getString('_name') ?? '';
-      _email = prefs.getString('_email') ?? '';
-      _token = prefs.getString('_token') ?? '';
+    getDataPrefs().then((value) {
+      setState(() {
+        _name = value['_name'] ?? '';
+        _email = value['_email'] ?? '';
+        _token = value['_token'] ?? '';
+      });
+      if (_token == '') {
+        Get.offNamed('/login');
+      }
+      checkUser(context, _token);
     });
   }
 

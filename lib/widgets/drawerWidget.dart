@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:mrttodo/widgets/snackBar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/auth.dart';
 import '../functions/capitalize.dart';
 import '../functions/checkAuth.dart';
+import '../functions/prefs.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({
@@ -28,17 +30,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _name = prefs.getString('_name') ?? '';
-      _email = prefs.getString('_email') ?? '';
-      _token = prefs.getString('_token') ?? '';
-      _exp = prefs.getString('_exp') ?? '';
+    getDataPrefs().then((value) {
+      setState(() {
+        _name = value['_name'] ?? '';
+        _email = value['_email'] ?? '';
+        _token = value['_token'] ?? '';
+        _exp = value['_exp'] ?? '';
+      });
+      if (_token == '') {
+        Get.offNamed('/login');
+      }
+      checkUser(context, _token);
     });
-    if (_token == '') {
-      Navigator.pushReplacementNamed(context, '/login');
-    }
-    checkUser(context, _token);
   }
 
   @override
@@ -74,7 +77,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             onTap: () {
               logout(_token).then((response) {
                 if (response["status"]) {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Get.offNamed('/login');
                 }
                 final snackBar = customSnackBar(response["message"], "ok");
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);

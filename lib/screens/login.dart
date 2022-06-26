@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../api/auth.dart';
 import '../functions/prefs.dart';
 import '../googleSignIn.dart';
 import '../widgets/snackBar.dart';
-import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key, required this.title}) : super(key: key);
@@ -37,15 +37,16 @@ class _LoginState extends State<Login> {
   }*/
 
   getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _name = prefs.getString('_name') ?? '';
-      _email = prefs.getString('_email') ?? '';
-      _token = prefs.getString('_token') ?? '';
-      _exp = prefs.getString('_exp') ?? '';
+    getDataPrefs().then((value) {
+      setState(() {
+        _name = value["_name"];
+        _email = value["_email"];
+        _token = value["_token"];
+        _exp = value["_exp"];
+      });
     });
     if (_token != '') {
-      Navigator.pushReplacementNamed(context, '/home');
+      Get.offNamed('/home');
     }
   }
 
@@ -255,7 +256,7 @@ class _LoginState extends State<Login> {
                               fontSize: 11, fontWeight: FontWeight.w500),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/signup');
+                          Get.offNamed('/signup');
                         },
                       )
                     ],
@@ -287,7 +288,7 @@ class _LoginState extends State<Login> {
         });
         setDataPrefs(_name, _email, _token, _exp);
         // });
-        Navigator.pushReplacementNamed(context, '/home');
+        Get.offNamed('/home');
       }
     });
   }

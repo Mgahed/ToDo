@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:mrttodo/widgets/snackBar.dart';
 
 import '../api/auth.dart';
@@ -228,7 +230,7 @@ class _SignupState extends State<Signup> {
                               fontSize: 11, fontWeight: FontWeight.w500),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Get.offNamed('/login');
                         },
                       )
                     ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../api/auth.dart';
 import '../functions/checkAuth.dart';
@@ -28,17 +29,18 @@ class _EditUserDataState extends State<EditUserData> {
   }
 
   getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _name = prefs.getString('_name') ?? '';
-      _email = prefs.getString('_email') ?? '';
-      _token = prefs.getString('_token') ?? '';
-      _exp = prefs.getString('_exp') ?? '';
+    getDataPrefs().then((value) {
+      setState(() {
+        _name = value['_name'] ?? '';
+        _email = value['_email'] ?? '';
+        _token = value['_token'] ?? '';
+        _exp = value['_exp'] ?? '';
+      });
+      if (_token == '') {
+        Get.offNamed('/login');
+      }
+      checkUser(context, _token);
     });
-    if (_token == '') {
-      Navigator.pushReplacementNamed(context, '/login');
-    }
-    checkUser(context, _token);
   }
 
   final _formKey = GlobalKey<FormState>();
