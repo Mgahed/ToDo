@@ -74,7 +74,8 @@ class _HomeState extends State<Home> {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      // _todoController.deleteTodo(todos[index]["id"]);
+                      _todoController.deleteTodo(
+                          todos[index]["id"], _token, context);
                     },
                   ),
                   leading: Checkbox(

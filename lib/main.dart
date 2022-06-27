@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mrttodo/controller/categoryController.dart';
 import 'package:mrttodo/screens/addTodo.dart';
 import 'package:mrttodo/screens/editUserData.dart';
 import 'package:mrttodo/screens/home.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(TodoController());
+    Get.put(CategoryController());
     return GetMaterialApp(
       title: 'Todo List',
       debugShowCheckedModeBanner: false,

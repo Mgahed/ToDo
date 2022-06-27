@@ -92,6 +92,7 @@ class _EditUserDataState extends State<EditUserData> {
                             },
                             onEditingComplete: () {
                               _name = nameController.text;
+                              FocusManager.instance.primaryFocus?.unfocus();
                             },
                             onSaved: (value) => _formData['username'] = value!,
                             keyboardType: TextInputType.text,
