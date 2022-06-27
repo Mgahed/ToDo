@@ -51,6 +51,7 @@ class _EditUserDataState extends State<EditUserData> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController(text: _name);
     return Scaffold(
       drawer: const DrawerWidget(),
       appBar: AppBar(
@@ -82,12 +83,15 @@ class _EditUserDataState extends State<EditUserData> {
                       child: Column(
                         children: <Widget>[
                           TextFormField(
-                            controller: TextEditingController(text: _name),
+                            controller: nameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter valid name';
                               }
                               return null;
+                            },
+                            onEditingComplete: () {
+                              _name = nameController.text;
                             },
                             onSaved: (value) => _formData['username'] = value!,
                             keyboardType: TextInputType.text,

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mrttodo/controller/todoController.dart';
 
 import '../functions/checkAuth.dart';
@@ -55,15 +57,19 @@ class _HomeState extends State<Home> {
           var todos = _todoController.todos.value;
           return RefreshIndicator(
             onRefresh: () async {
-              // _todoController.getTodos();
+              return Future<void>.delayed(const Duration(seconds: 2), () {
+                checkUser(context, _token);
+              });
             },
             child: ListView.builder(
               itemCount: todos.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(todos[index]["todo"],
-                      style: const TextStyle(
-                          decoration: TextDecoration.lineThrough)),
+                      style: TextStyle(
+                          decoration: todos[index]["status"]
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none)),
                   subtitle: Text(todos[index]["category_id"].toString()),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
@@ -73,8 +79,17 @@ class _HomeState extends State<Home> {
                   ),
                   leading: Checkbox(
                     value: todos[index]["status"],
+                    activeColor: Theme.of(context).colorScheme.primary,
                     onChanged: (value) {
-                      // _todoController.updateTodo(todos[index]["id"], value);
+                      setState(() {
+                        todos[index]["status"] = value;
+                      });
+                      _todoController.updateTodo(
+                          todos[index]["id"],
+                          todos[index]["category_id"],
+                          todos[index]["todo"],
+                          value,
+                          _token);
                     },
                   ),
                 );

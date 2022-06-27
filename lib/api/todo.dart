@@ -38,3 +38,38 @@ Future<dynamic> createTodo(data) async {
     }
   }
 }
+
+Future<dynamic> updateTodoApi(data, token) async {
+  try {
+    var response = await Dio().post(
+      '$baseUrl/todo/update',
+      data: data,
+      options: Options(headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Authorization": "Bearer $token",
+      }),
+    );
+    print("update todo ress =>>> $response");
+    if (response.statusCode == 200) {
+      return {"message": "todo updated successfully", "status": true};
+    } else {
+      String error = '';
+      for (var currError in response.data.errors) {
+        error += '$currError\n';
+      }
+      return {"message": error, "status": false};
+    }
+  } on DioError catch (e) {
+    if (e.response?.statusCode == 422) {
+      /*String error = '';
+      for (var currError in e.response?.data['errors']) {
+        error += '\n$currError';
+      }*/
+      return {"message": e.response?.data['errors'], "status": false};
+    } else {
+      return {"message": "Something went wrong", "status": false};
+    }
+  }
+}
