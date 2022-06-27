@@ -25,6 +25,7 @@ class _AddTodoState extends State<AddTodo> {
     'category_id': '',
   };
 
+  var categories = [];
   String _token = '';
 
   @override
@@ -34,15 +35,19 @@ class _AddTodoState extends State<AddTodo> {
   }
 
   getData() async {
-    getDataPrefs().then((value) {
+    getDataPrefs().then((value) async {
       setState(() {
         _token = value['_token'] ?? '';
       });
       if (_token == '') {
         Get.offNamed('/login');
       }
+      getCategories(_token).then((value) {
+        setState(() {
+          categories = _categoryController.categories;
+        });
+      });
       checkUser(context, _token);
-      getCategories(_token);
     });
   }
 
@@ -114,8 +119,7 @@ class _AddTodoState extends State<AddTodo> {
                                 _formData['category_id'] = newValue!.toString();
                               });
                             },
-                            items:
-                                _categoryController.categories.map((category) {
+                            items: categories.map((category) {
                               return DropdownMenuItem<String>(
                                 value: category["id"].toString(),
                                 child: Text(category["name"]),
