@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mrttodo/screens/home.dart';
 
 import '../api/todo.dart';
 import '../functions/checkAuth.dart';

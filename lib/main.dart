@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mrttodo/controller/categoryController.dart';
@@ -10,6 +11,7 @@ import 'package:mrttodo/screens/signup.dart';
 import 'package:mrttodo/screens/splashScreen.dart';
 import 'package:mrttodo/theme/my_theme.dart';
 
+import 'controller/themeController.dart';
 import 'controller/todoController.dart';
 
 void main() async {
@@ -24,17 +26,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(TodoController());
     Get.put(CategoryController());
+    Get.put(ThemeController());
+    final ThemeController _themeController = Get.find();
     return GetMaterialApp(
       title: 'Todo List',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       theme: ThemeData(
-        colorScheme: lightTheme,
+        colorScheme: _themeController.isDarkMode.value ? darkTheme : lightTheme,
       ),
       darkTheme: ThemeData(
-        colorScheme: darkTheme,
+        colorScheme: _themeController.isDarkMode.value ? darkTheme : lightTheme,
       ),
-      // initialRoute: '/splash',
       home: const MySplashScreen(title: 'Todo App'),
       /*routes: {
         '/splash': (context) => const MySplashScreen(title: 'Todo App'),
