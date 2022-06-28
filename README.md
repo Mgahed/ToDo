@@ -1,16 +1,19 @@
-# mrttodo
+# Todo App
 
-A new Flutter project.
+## Description
 
-## Getting Started
+* Simple online todo list app
+* Keep your data saved online
+* Easy to use
+* This App requires internet connection
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Dark             |  Light
+:-------------------------:|:-------------------------:
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/dsplash.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/lsplash.jpg)
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/dlogin.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/llogin.jpg)
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/dsignup.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/lsignup.jpg)
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/dhome.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/lhome.jpg)
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/daddtodo.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/laddtodo.jpg)
+![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/ddrawer.jpg)  |  ![](https://raw.githubusercontent.com/Mgahed/ToDo/master/assets/screenshots/ldrawer.jpg)
