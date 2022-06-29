@@ -34,9 +34,6 @@ class _MySplashScreenState extends State<MySplashScreen> {
         _email = value['_email'] ?? '';
         _token = value['_token'] ?? '';
       });
-      if (_token == '') {
-        Get.offNamed('/login');
-      }
       checkUser(context, _token);
     });
   }
@@ -46,18 +43,20 @@ class _MySplashScreenState extends State<MySplashScreen> {
     return EasySplashScreen(
       backgroundColor: Theme.of(context).colorScheme.background,
       loaderColor: Theme.of(context).colorScheme.secondary,
-      logo: Image.network(
-          'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/25425fb2-bc94-4349-8d8a-6eabb4d6ccd2/dbww48m-e74bf3fc-83e1-469d-bfd4-0c64c6db2965.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI1NDI1ZmIyLWJjOTQtNDM0OS04ZDhhLTZlYWJiNGQ2Y2NkMlwvZGJ3dzQ4bS1lNzRiZjNmYy04M2UxLTQ2OWQtYmZkNC0wYzY0YzZkYjI5NjUuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.0xUgvsA4QUzPfzS05r9zSAaekcd7Sh0xXf5eb2EN3E0'),
-      logoSize: MediaQuery.of(context).size.width * 0.5,
+      logo: Image.asset(
+        'assets/images/logo.png',
+        width: MediaQuery.of(context).size.width * 0.5,
+      ),
+      // logoSize: MediaQuery.of(context).size.width * 0.5,
       title: const Text(
-        "Todo",
+        "Todo List",
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
-      showLoader: true,
-      loadingText: const Text("Loading..."),
+      showLoader: false,
+      // loadingText: const Text("Loading..."),
       navigator: _token == ''
           ? const Login(title: 'Login')
           : const Home(title: 'Todo App'),
