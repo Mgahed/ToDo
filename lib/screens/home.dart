@@ -57,9 +57,8 @@ class _HomeState extends State<Home> {
           var todos = _todoController.todos.value;
           return RefreshIndicator(
             onRefresh: () async {
-              return Future<void>.delayed(const Duration(seconds: 2), () {
-                checkUser(context, _token);
-              });
+              checkUser(context, _token);
+              return Future<void>.delayed(const Duration(seconds: 2), () {});
             },
             child: ListView.builder(
               itemCount: todos.length,
@@ -70,7 +69,7 @@ class _HomeState extends State<Home> {
                           decoration: todos[index]["status"]
                               ? TextDecoration.lineThrough
                               : TextDecoration.none)),
-                  subtitle: Text(todos[index]["category_id"].toString()),
+                  subtitle: Text(todos[index]["catname"].toString()),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
